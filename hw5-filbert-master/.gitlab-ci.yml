@@ -1,0 +1,98 @@
+image: gradle:jdk8
+
+before_script:
+  - cp "$PROJECT_SCRIPTS_PATH/hw5/build.gradle" build.gradle
+
+stages:
+  - compile
+  - test
+
+.shared: &shared
+  only:
+    refs:
+      - branches
+    changes:
+      - src/**/*
+  except:
+    refs:
+      - initial
+
+compile:
+  <<: *shared
+  stage: compile
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw5/compile.sh" compile.sh
+    - sh compile.sh
+  tags:
+    - hw5
+    - compile
+
+compile-for-grading:
+  <<: *shared
+  stage: compile
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw5/compile-for-grading.sh" compile-for-grading.sh
+    - sh compile-for-grading.sh
+  tags:
+    - hw5
+    - compile
+
+checkstyle-p1:
+  <<: *shared
+  stage: test
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw5/p1/checkstyle.sh" checkstyle-p1.sh
+    - sh checkstyle-p1.sh
+  tags:
+    - hw5
+    - checkstyle
+
+checkstyle-p2:
+  <<: *shared
+  stage: test
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw5/p2/checkstyle.sh" checkstyle-p2.sh
+    - sh checkstyle-p2.sh
+  tags:
+    - hw5
+    - checkstyle
+
+test-p1:
+  <<: *shared
+  stage: test
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw5/p1/test.sh" test-p1.sh
+    - sh test-p1.sh
+  tags:
+    - hw5
+    - test-p1
+
+test-p1-secret:
+  <<: *shared
+  stage: test
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw5/p1/test-secret.sh" test-p1-secret.sh
+    - sh test-p1-secret.sh
+  tags:
+    - hw5
+    - test-p1
+
+test-p2:
+  <<: *shared
+  stage: test
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw5/p2/test.sh" test-p2.sh
+    - sh test-p2.sh
+  tags:
+    - hw5
+    - test-p2
+
+test-prev:
+  <<: *shared
+  stage: test
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw5/test-prev.sh" test-prev.sh
+    - sh test-prev.sh
+  tags:
+    - hw5
+    - test-prev
