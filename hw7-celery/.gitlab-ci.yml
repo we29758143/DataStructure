@@ -1,0 +1,68 @@
+image: gradle:jdk8
+
+before_script:
+  - cp "$PROJECT_SCRIPTS_PATH/hw7/build.gradle" build.gradle
+
+stages:
+  - compile
+  - test
+
+.shared: &shared
+  only:
+    refs:
+      - branches
+    changes:
+      - src/**/*
+  except:
+    refs:
+      - initial
+
+compile:
+  <<: *shared
+  stage: compile
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw7/compile.sh" compile.sh
+    - sh compile.sh
+  tags:
+    - hw7
+    - compile
+
+compile-for-grading:
+  <<: *shared
+  stage: compile
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw7/compile-for-grading.sh" compile-for-grading.sh
+    - sh compile-for-grading.sh
+  tags:
+    - hw7
+    - compile
+
+checkstyle:
+  <<: *shared
+  stage: test
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw7/checkstyle.sh" checkstyle.sh
+    - sh checkstyle.sh
+  tags:
+    - hw7
+    - checkstyle
+
+test:
+  <<: *shared
+  stage: test
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw7/test.sh" test.sh
+    - sh test.sh
+  tags:
+    - hw7
+    - test
+
+test-prev:
+  <<: *shared
+  stage: test
+  script:
+    - cp "$PROJECT_SCRIPTS_PATH/hw7/test-prev.sh" test-prev.sh
+    - sh test-prev.sh
+  tags:
+    - hw7
+    - test-prev
